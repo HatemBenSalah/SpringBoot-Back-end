@@ -24,6 +24,7 @@ import com.template.repositories.UserRepository;
 @RequestMapping("/rolesController")
 public class RolesController {
 	
+	
 	@Autowired
 	private RoleRepository roleRep;
 	
