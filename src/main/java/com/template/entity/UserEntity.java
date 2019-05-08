@@ -18,7 +18,7 @@ public class UserEntity {
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private Long id;
+	private Integer id;
 	
 	@Column(name="FIRST_NAME")
 	private String firstName;
@@ -29,15 +29,55 @@ public class UserEntity {
 	@Column(name="EMAIL")
 	private String email;
 	
+	//Encrypted using bycript
 	@Column(name="PASSWORD")
 	private String password;
 	
+	//creation date of user
+	@Column(name="CREATED_ON")
+	private String createdOn;
+	
+	//last update on the user informations
+	@Column(name="UPDATED_ON")
+	private String updatedOn;
+	
+	//last login to the app
+	@Column(name="LATST_LOGIN")
+	private String lastLogin;
+	
+	//takes true if the user has been deleted , an account can be restored
 	@Column(name="IS_DELETED")
 	private Boolean isDeleted;
 	
 	@JoinColumn(name="ROLE_ID")
 	@ManyToOne
 	private RolesEntity role;
+
+	public String getCreatedOn() {
+		return createdOn;
+	}
+
+	public void setCreatedOn(String createdOn) {
+		this.createdOn = createdOn;
+	}
+
+	public String getUpdatedOn() {
+		return updatedOn;
+	}
+
+	public void setUpdatedOn(String updatedOn) {
+		this.updatedOn = updatedOn;
+	}
+
+	public String getLastLogin() {
+		return lastLogin;
+	}
+
+	public void setLastLogin(String lastLogin) {
+		this.lastLogin = lastLogin;
+	}
+
+	
 
 	
 	public Boolean getIsDeleted() {
@@ -48,11 +88,11 @@ public class UserEntity {
 		this.isDeleted = isDeleted;
 	}
 
-	public Long getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 

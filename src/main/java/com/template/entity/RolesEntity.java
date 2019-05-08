@@ -11,8 +11,6 @@ import javax.persistence.Table;
 @Table(name = "ROLE")
 public class RolesEntity {
 	
-private static final long serialVersionUID = 1L;
-	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Integer id;
@@ -20,6 +18,28 @@ private static final long serialVersionUID = 1L;
 	@Column(name="DESCRIPTION")
 	private String description;
 	
+	@Column(name="CREATED_ON")
+	private String createdOn;
+	
+	@Column(name="UPDATED_ON")
+	private String updatedOn;
+	
+	public String getCreatedOn() {
+		return createdOn;
+	}
+
+	public void setCreatedOn(String createdOn) {
+		this.createdOn = createdOn;
+	}
+
+	public String getUpdatedOn() {
+		return updatedOn;
+	}
+
+	public void setUpdatedOn(String updatedOn) {
+		this.updatedOn = updatedOn;
+	}
+
 	@Column(name="IS_DELETED")
 	private Boolean isDeleted;
 
@@ -47,8 +67,5 @@ private static final long serialVersionUID = 1L;
 		this.description = description;
 	}
 
-	public static long getSerialversionuid() {
-		return serialVersionUID;
-	}
 
 }

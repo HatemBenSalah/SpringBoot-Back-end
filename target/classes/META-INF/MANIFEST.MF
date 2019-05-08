@@ -3,7 +3,7 @@ Implementation-Title: Java Template
 Implementation-Version: 0.0.1-SNAPSHOT
 Built-By: Bouzid
 Implementation-Vendor-Id: com.java_templateStart
-Build-Jdk: 1.8.0_201
+Build-Jdk: 1.8.0_211
 Implementation-URL: https://projects.spring.io/spring-boot/#/spring-bo
  ot-starter-parent/java_template
 Created-By: Maven Integration for Eclipse

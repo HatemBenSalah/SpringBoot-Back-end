@@ -1,6 +1,6 @@
 package com.template.controller;
 
-
+import java.util.Date;
 import java.util.List;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 import com.template.entity.RolesEntity;
 import com.template.entity.UserEntity;
 import com.template.exception.ResourceNotFoundException;
@@ -24,7 +23,7 @@ import com.template.repositories.UserRepository;
 public class UserController {
 	
 	@Autowired
-	private static UserRepository userRep;
+	private UserRepository userRep;
 		
 	@GetMapping(path="/getNonDeletedUsers")
 	public List<UserEntity> getNonDeletedUsers() {
@@ -42,24 +41,28 @@ public class UserController {
 	}
 	
 	@GetMapping("/getUserById/{id}")
-	public ResponseEntity<UserEntity> getUserByID(@PathVariable(value="id") Long userId)
+	public ResponseEntity<UserEntity> getUserByID(@PathVariable(value="id") Integer userId)
 	throws ResourceNotFoundException{
 		UserEntity user = userRep.findById(userId)
 						.orElseThrow(() -> new ResourceNotFoundException("User not found for this id :"+userId));
 		return ResponseEntity.ok().body(user);
 	}
 	
-	@GetMapping("/login/{email}/{password}")
-	public ResponseEntity<UserEntity> login(@PathVariable(value="email") String userEmail , @PathVariable(value="password") String userPassword)
+	@GetMapping("/login")
+	public ResponseEntity<UserEntity> login(@RequestBody UserEntity userLogs)
 	throws ResourceNotFoundException{
 		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-		List<UserEntity> user = userRep.findByemail(userEmail);
+		List<UserEntity> user = userRep.findByemail(userLogs.getEmail());
 		if(user.size() != 0) {
 			for(int i=0; i<user.size(); i++) {
-				if(passwordEncoder.matches(userPassword, user.get(i).getPassword())) {
+				if(passwordEncoder.matches(userLogs.getPassword(), user.get(i).getPassword())) {
 					if(user.get(i).getIsDeleted() == true) {
 						return  ResponseEntity.ok().header("userResult", "deleted account").body(null);
-					}else return ResponseEntity.ok().body(user.get(i));
+					}else {
+						user.get(i).setLastLogin(new Date()+"");
+						userRep.save(user.get(i));
+						return ResponseEntity.ok().body(user.get(i));
+					}
 				}
 			}	
 			return  ResponseEntity.ok().header("userResult", "no password matches").body(null);
@@ -68,47 +71,58 @@ public class UserController {
 	}
 	
 	@PostMapping("/addUser")
-	public UserEntity addUser(@Valid @RequestBody UserEntity user) {
+	public ResponseEntity<UserEntity> addUser(@Valid @RequestBody UserEntity user)
+			throws ResourceNotFoundException {
+		List<UserEntity> UserExist = userRep.findByemail(user.getEmail());
+		if(UserExist.size() != 0) {
+		return ResponseEntity.ok().header("Already exist", "this user already exist").body(null);
+		}else {
 		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 		user.setPassword(passwordEncoder.encode(user.getPassword()));
 		user.setIsDeleted(false);
-		return userRep.save(user);
+		user.setCreatedOn(new Date()+"");
+		userRep.save(user);
+		return ResponseEntity.ok().body(user);
+		}
 	}
 	
 	@PostMapping("/deleteUser/{id}")
-	public String deleteUser(@PathVariable(value="id") Long userId)
+	public String deleteUser(@PathVariable(value="id") Integer userId)
 			throws ResourceNotFoundException {
 		UserEntity user = userRep.findById(userId)
 				.orElseThrow(() -> new ResourceNotFoundException("User not found for this Id :"+userId));
 		user.setIsDeleted(true);
+		user.setUpdatedOn(new Date()+"");
 		userRep.save(user);
 		return "success";
 	}
 	
 	@PostMapping("/restoreUser/{id}")
-	public String restoreUser(@PathVariable(value="id") Long userId)
+	public String restoreUser(@PathVariable(value="id") Integer userId)
 			throws ResourceNotFoundException {
 		UserEntity user = userRep.findById(userId)
 				.orElseThrow(() -> new ResourceNotFoundException("User not found for this Id :"+userId));
 		user.setIsDeleted(false);
+		user.setUpdatedOn(new Date()+"");
 		userRep.save(user);
 		return "success";
 	}
 	
 	@PutMapping("/editUser/{id}")
-	public ResponseEntity<UserEntity> editUser(@PathVariable(value="id") Long UserId, @Valid @RequestBody UserEntity userDetails)
+	public ResponseEntity<UserEntity> editUser(@PathVariable(value="id") Integer UserId, @Valid @RequestBody UserEntity userDetails)
 	throws ResourceNotFoundException{
 		UserEntity user = userRep.findById(UserId)
 				.orElseThrow(() -> new ResourceNotFoundException("User not found for this Id :"+UserId));
 		user.setEmail(userDetails.getEmail());
 		user.setFirstName(userDetails.getFirstName());
 		user.setLastName(userDetails.getLastName());
+		user.setUpdatedOn(new Date()+"");
 		final UserEntity updatedUser = userRep.save(user);
 		return ResponseEntity.ok(updatedUser);
 	}
 	
 	@PutMapping("/editRoleForUser/{id}")
-	public ResponseEntity<UserEntity> editRoleForUser(@PathVariable(value="id") Long UserId, @Valid @RequestBody UserEntity userDetails)
+	public ResponseEntity<UserEntity> editRoleForUser(@PathVariable(value="id") Integer UserId, @Valid @RequestBody UserEntity userDetails)
 	throws ResourceNotFoundException{
 		UserEntity user = userRep.findById(UserId)
 				.orElseThrow(() -> new ResourceNotFoundException("User not found for this Id :"+UserId));
@@ -116,6 +130,7 @@ public class UserController {
 		role.setId(userDetails.getRole().getId());
 		role.setDescription(userDetails.getRole().getDescription());
 		user.setRole(role);
+		user.setUpdatedOn(new Date()+"");
 		final UserEntity updatedUser = userRep.save(user);
 		return ResponseEntity.ok(updatedUser);
 	}
