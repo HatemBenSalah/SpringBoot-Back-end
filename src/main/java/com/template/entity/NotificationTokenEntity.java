@@ -18,12 +18,23 @@ public class NotificationTokenEntity {
 		@GeneratedValue(strategy=GenerationType.IDENTITY)
 		private Integer id;
 		
-		@Column(name="Token")
+		@Column(name="TOKEN")
 		private String token;
+		
+		@Column(name="CREATED_ON")
+		private String createdOn;
 		
 		@JoinColumn(name="USER_ID")
 		@ManyToOne
 		private UserEntity userId;
+		
+		public String getCreatedOn() {
+			return createdOn;
+		}
+
+		public void setCreatedOn(String createdOn) {
+			this.createdOn = createdOn;
+		}
 
 		public Integer getId() {
 			return id;
