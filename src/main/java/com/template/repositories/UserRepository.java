@@ -10,8 +10,6 @@ import com.template.entity.UserEntity;
 
 @Repository
 public interface UserRepository extends JpaRepository<UserEntity, Integer> {
-	List<UserEntity> findByemail(String email);
-	List<UserEntity> findByisDeleted(Boolean isDeleted);
-	List<UserEntity> findByrole(RolesEntity role);
+
 	
 }
