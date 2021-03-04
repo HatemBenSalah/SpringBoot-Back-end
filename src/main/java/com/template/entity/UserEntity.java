@@ -29,6 +29,11 @@ public class UserEntity {
 
 	@Column(name="ADRESSE")
 	private String adresse;
+
+
+
+	@Column(name="PHONE")
+	private String phone;
 	
 	//Encrypted using bycript
 	@Column(name="PASSWORD")
@@ -92,6 +97,8 @@ public class UserEntity {
 	public String getCIN() {return CIN;	}
 
 	public void setCIN(String CIN) {this.CIN = CIN;	}
+	public String getPhone() {return phone;	}
 
+	public void setPhone(String phone) {this.phone = phone;	}
 
 }

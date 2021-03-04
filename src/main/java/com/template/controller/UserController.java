@@ -32,15 +32,24 @@ public class UserController {
     }
 
     @GetMapping("/UserEntity/{id}")
-    public ResponseEntity<UserEntity> getEmployeeById(@PathVariable(value = "id") Integer userId)
+    public ResponseEntity<UserEntity> getUserById(@PathVariable(value = "id") Integer userId)
             throws ResourceNotFoundException {
         UserEntity user = userRepository.findById(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("user not found for this id :: " + userId));
         return ResponseEntity.ok().body(user);
     }
 
+
+    @GetMapping("/UserEntity/{CIN}")
+    public ResponseEntity<UserEntity> getUserByCIN(@PathVariable(value = "CIN") Integer userCin)
+            throws ResourceNotFoundException {
+        UserEntity user = userRepository.findById(userCin)
+                .orElseThrow(() -> new ResourceNotFoundException("user not found for this CIN :: " + userCin));
+        return ResponseEntity.ok().body(user);
+    }
+
     @PostMapping("/createUser")
-    public UserEntity createEmployee(@Valid @RequestBody UserEntity user) {
+    public UserEntity createUser(@Valid @RequestBody UserEntity user) {
         return userRepository.save(user);
     }
 
@@ -55,6 +64,8 @@ public class UserController {
             user.setCIN(UserDetails.getCIN());
             user.setAdresse(UserDetails.getAdresse());
             user.setPassword(UserDetails.getPassword());
+            user.setPhone(UserDetails.getPhone());
+
 
             userRepository.save(user);
             return true;
