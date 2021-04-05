@@ -59,7 +59,6 @@ public class CommandeController {
             commande.setAdresse(CommandeDetails.getAdresse());
             commande.setNameservice(CommandeDetails.getNameservice());
             commande.setPannedescription(CommandeDetails.getPannedescription());
-
             commandeRepository.save(commande);
             return true;
         } catch (Exception e) {

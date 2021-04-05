@@ -7,9 +7,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 @Entity
-@Table(name="EMPLOYE")
+@Table(name="EMPLOYEES")
 
-public class EmployeEntity {
+public class EmployeeEntity {
     private static final long serialVersionUID = 1L;
 
     @Id
@@ -30,7 +30,7 @@ public class EmployeEntity {
     @Column(name="EMPLOYE_CODE")
     private String employecode;
 
-    public Integer getId() {return id;}
+    public Integer  getId() {return id;}
 
     public void setId(Integer id) {this.id = id;}
 
