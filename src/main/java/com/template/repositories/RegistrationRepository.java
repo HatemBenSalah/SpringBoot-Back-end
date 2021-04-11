@@ -13,6 +13,7 @@ import com.template.entity.UserEntity;
 @Repository
 public interface RegistrationRepository extends JpaRepository<UserEntity, Integer> {
     UserEntity findByEmail(String email);
+    //UserEntity findByEmail(String email);
 
 
 
