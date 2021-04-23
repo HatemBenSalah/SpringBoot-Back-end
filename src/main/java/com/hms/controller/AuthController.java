@@ -30,18 +30,12 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthController {
     @Autowired
     AuthenticationManager authenticationManager;
-
     @Autowired
     UserRepository userRepository;
-
-
-
     @Autowired
     PasswordEncoder encoder;
-
     @Autowired
     JwtUtils jwtUtils;
-
     @PostMapping("/signin")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
 
@@ -74,7 +68,7 @@ public class AuthController {
         {
             return ResponseEntity
                     .badRequest()
-                    .body(new MessageResponse("Error: Roles is not find!"));
+                    .body(new MessageResponse("Error: Roles is not found!"));
         }
 
         // Create new user's account
@@ -82,13 +76,7 @@ public class AuthController {
                 signUpRequest.getEmail(),
                 encoder.encode(signUpRequest.getPassword()),signUpRequest.getRoles(),signUpRequest.getPhone(),signUpRequest.getFirstName(),
                 signUpRequest.getLastName(),signUpRequest.getCin(),signUpRequest.getAdresse());
-
-
-
-
         userRepository.save(user);
-
-
 
         return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
     }

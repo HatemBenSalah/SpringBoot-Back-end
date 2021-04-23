@@ -7,9 +7,17 @@ import java.util.Map;
 import javax.validation.Valid;
 
 import com.hms.entity.CommandeEntity;
+import com.hms.entity.UserEntity;
 import com.hms.repositories.CommandeRepository;
+import com.hms.repositories.UserRepository;
+import com.hms.request.CommandeRequest;
+import com.hms.request.SignupRequest;
+import com.hms.response.MessageResponse;
+import com.hms.security.jwt.JwtUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,7 +30,13 @@ import com.hms.exception.ResourceNotFoundException;
 @RestController
 @RequestMapping("/CommandeController")
 public class CommandeController {
+    @Autowired
+    AuthenticationManager authenticationManager;
 
+    @Autowired
+    PasswordEncoder encoder;
+    @Autowired
+    JwtUtils jwtUtils;
     @Autowired
     private CommandeRepository commandeRepository;
 
@@ -42,10 +56,29 @@ public class CommandeController {
 
 
 
-    @PostMapping("/createCommande")
+   /* @PostMapping("/createCommande")
     public CommandeEntity createCommande(@Valid @RequestBody CommandeEntity commande) {
         return commandeRepository.save(commande);
+    }*/
+
+
+    @PostMapping("/createCommande")
+    public ResponseEntity<?> createCommande(@Valid @RequestBody CommandeRequest CommandeRequest) {
+
+
+
+
+
+        // Create new commande
+        CommandeEntity commande = new CommandeEntity(
+                CommandeRequest.getEmail(),
+                CommandeRequest.getPhone(),CommandeRequest.getFirstName(),
+                CommandeRequest.getLastName(),CommandeRequest.getAdresse());
+        commandeRepository.save(commande);
+
+        return ResponseEntity.ok(new MessageResponse("cammmande created successfully!"));
     }
+
 
     @PostMapping("/updateCommande")
     public Boolean updateCommande(@Valid @RequestBody CommandeEntity CommandeDetails) throws ResourceNotFoundException {
