@@ -1,15 +1,12 @@
 package com.hms.response;
 
-
-
 public class JwtResponse {
     private String token;
     private String type = "Bearer ";
     private Long id;
-    private String username;
+
     private String email;
     private String roles;
-
     private String phone;
     private String firstName;
     private String lastName;
@@ -34,26 +31,15 @@ public class JwtResponse {
     }
 
 
+    public String getAccessToken() { return token; }
 
-    public String getAccessToken() {
-        return token;
-    }
+    public void setAccessToken(String accessToken) { this.token = accessToken; }
 
-    public void setAccessToken(String accessToken) {
-        this.token = accessToken;
-    }
+    public String getTokenType() {   return type; }
 
-    public String getTokenType() {
-        return type;
-    }
+    public void setTokenType(String tokenType) {   this.type = tokenType;  }
 
-    public void setTokenType(String tokenType) {
-        this.type = tokenType;
-    }
-
-    public Long getId() {
-        return id;
-    }
+    public Long getId() {return id;}
 
     public void setId(Long id) {
         this.id = id;
@@ -68,7 +54,5 @@ public class JwtResponse {
     }
 
 
-    public String getRoles() {
-        return roles;
-    }
+    public String getRoles() { return roles; }
 }

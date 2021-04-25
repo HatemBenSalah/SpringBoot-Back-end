@@ -31,6 +31,22 @@ public class CommandeEntity {
     private String phone;
     @Column(name="PANNE_DESCRIPTION")
     private String pannedescription;
+
+    public CommandeEntity() {
+    }
+
+    public CommandeEntity(String email, String phone,String firstName,String lastName, String adresse) {
+
+        this.email = email;
+
+        this.phone=phone;
+        this.firstName=firstName;
+        this.lastName=lastName;
+
+        this.adresse=adresse;
+    }
+
+
     public String getNameservice() {return nameservice;}
     public void setNameservice(String nameservice) {this.nameservice = nameservice;}
     public String getPannedescription() {
