@@ -7,7 +7,9 @@ import java.util.Map;
 import javax.validation.Valid;
 
 import com.hms.entity.CommandeEntity;
+import com.hms.entity.UserEntity;
 import com.hms.repositories.CommandeRepository;
+import com.hms.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,19 +27,25 @@ public class CommandeController {
 
     @Autowired
     private CommandeRepository commandeRepository;
+    @Autowired
+    private UserRepository userRepository;
 
-    @GetMapping("/getCommande")
-    public List<CommandeEntity> getAllCommande() {
-        return commandeRepository.findAll();
+    @GetMapping("/getCommande/{id}")
+    public List<CommandeEntity> getAllCommande(@PathVariable Long id) {
+        UserEntity user = userRepository.getOne(id);
+        System.out.println("commande:"+commandeRepository.findbyuser(id));
+
+        return commandeRepository.findbyuser(id);
+
     }
 
-    @GetMapping("/CommandeEntity/{id}")
-    public ResponseEntity<CommandeEntity> getCommandebyid(@PathVariable(value = "id") Integer commandeId)
+   /* @GetMapping("/CommandeEntity/{id}")
+    public ResponseEntity<CommandeEntity> getCommandebyid(@PathVariable(value = "id") Long commandeId)
             throws ResourceNotFoundException {
         CommandeEntity commande = commandeRepository.findById(commandeId)
                 .orElseThrow(() -> new ResourceNotFoundException("commande not found for this id :: " + commandeId));
         return ResponseEntity.ok().body(commande);
-    }
+    }*/
 
 
 
@@ -69,7 +77,7 @@ public class CommandeController {
     }
 
     @PostMapping("/deleteCommande")
-    public Map<String, Boolean> deleteCommande(@Valid @RequestBody Integer commandeID)
+    public Map<String, Boolean> deleteCommande(@Valid @RequestBody Long commandeID)
             throws ResourceNotFoundException {
         CommandeEntity commande = commandeRepository.findById(commandeID)
                 .orElseThrow(() -> new ResourceNotFoundException("commande not found for this id :: " + commandeID));
