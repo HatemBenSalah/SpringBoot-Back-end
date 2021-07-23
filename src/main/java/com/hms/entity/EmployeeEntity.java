@@ -1,11 +1,8 @@
 package com.hms.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.List;
+
 @Entity
 @Table(name="EMPLOYEES")
 
@@ -14,52 +11,140 @@ public class EmployeeEntity {
 
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
     @Column(name = "EMPLOYE_NAME")
-    private String employeName;
+    private String firstName;
     @Column(name="EMPLOYE_LASTNAME")
-    private String employeLastname;
+    private String lastName;
     @Column(name= "EMPLOYE_EMAIL")
-    private String employeemail;
+    private String email;
     @Column(name="EMPLOYE_SERVICE")
     private String employeservice;
     @Column(name="EMPLOYE_PHONE")
-    private String employephone;
+    private String phone;
     @Column(name="EMPLOYE_CIN")
-    private String employecin;
-    @Column(name="EMPLOYE_CODE")
-    private String employecode;
+    private String cin;
+    @Column(name="EMPLOYE_ADRESSE")
+    private String adresse;
+    @Column(name="PASSWORD")
+    private String password;
+    @Column(name="ROLES")
+    private String roles;
 
-    public Integer  getId() {return id;}
 
-    public void setId(Integer id) {this.id = id;}
+    @OneToMany(mappedBy = "employee")
+    private List<ClaimEntity> claimEntityList  ;
 
-    public String getEmployeName() {return employeName;}
 
-    public void setEmployeName(String employeName) {this.employeName = employeName;}
+    @OneToMany(mappedBy = "employee")
+    private List<CommandeEntity> commandeEntityList  ;
+    @OneToMany(mappedBy = "employee")
+    private List<InterventionEntity> interventionEntityList  ;
 
-    public String getEmployeLastname() {return employeLastname;}
+    public EmployeeEntity(){};
+    public EmployeeEntity(String email, String password,String roles
+            , String phone,String firstName,String lastName, String cin, String adresse ,String employeservice) {
 
-    public void setEmployeLastname(String employeLastname) {this.employeLastname = employeLastname;}
+        this.email = email;
+        this.password = password;
+        this.roles =roles;
+        this.phone=phone;
+        this.firstName=firstName;
+        this.lastName=lastName;
+        this.cin=cin;
+        this.adresse=adresse;
+        this.employeservice=employeservice;
+    }
 
-    public String getEmployeemail() {return employeemail;}
+    public String getFirstName() {
+        return firstName;
+    }
 
-    public void setEmployeemail(String employeemail) {this.employeemail = employeemail;}
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
 
-    public String getEmployeservice() {return employeservice;}
+    public String getLastName() {
+        return lastName;
+    }
 
-    public void setEmployeservice(String employeservice) {this.employeservice = employeservice;}
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
 
-    public String getEmployephone() {return employephone;}
+    public String getEmail() {
+        return email;
+    }
 
-    public void setEmployephone(String employephone) {this.employephone = employephone;}
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
-    public String getEmployecin() {return employecin;}
+    public String getEmployeservice() {
+        return employeservice;
+    }
 
-    public void setEmployecin(String employecin) {this.employecin = employecin;}
+    public void setEmployeservice(String employeservice) {
+        this.employeservice = employeservice;
+    }
 
-    public String getEmployecode() {return employecode;}
+    public String getPhone() {
+        return phone;
+    }
 
-    public void setEmployecode(String employecode) {this.employecode = employecode;}
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
 
-}
+    public String getCin() {
+        return cin;
+    }
+
+    public void setCin(String cin) {
+        this.cin = cin;
+    }
+
+    public String getAdresse() {
+        return adresse;
+    }
+
+    public void setAdresse(String adresse) {
+        this.adresse = adresse;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getRoles() {
+        return roles;
+    }
+
+    public void setRoles(String roles) {
+        this.roles = roles;
+    }
+
+
+    public Long  getId() {return id;}
+
+    public void setId(Long id) {this.id = id;}
+
+
+
+    public void setClaimEntityList(List<ClaimEntity> claimEntityList) {
+        this.claimEntityList = claimEntityList;
+    }
+
+    public void setInterventionEntityList(List<InterventionEntity> interventionEntityList) {
+        this.interventionEntityList = interventionEntityList;
+    }
+
+    public void setCommandeEntityList(List<CommandeEntity> commandeEntityList) {
+        this.commandeEntityList = commandeEntityList;
+    }
+
+  }

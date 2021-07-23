@@ -1,7 +1,9 @@
 package com.hms.security.service;
 
+import com.hms.entity.AdminEntity;
 import com.hms.entity.CommandeEntity;
 import com.hms.entity.UserEntity;
+import com.hms.repositories.AdminRepository;
 import com.hms.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -17,6 +19,7 @@ import java.util.List;
 public class UserDetailsServiceImpl implements UserDetailsService {
     @Autowired
     UserRepository userRepository;
+
 
     @Override
     @Transactional

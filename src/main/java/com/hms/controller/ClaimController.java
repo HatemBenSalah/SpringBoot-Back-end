@@ -4,8 +4,7 @@ import java.util.List;
 import java.util.Map;
 import javax.validation.Valid;
 import com.hms.entity.ClaimEntity;
-import com.hms.entity.CommandeEntity;
-import com.hms.entity.UserEntity;
+import com.hms.interfaces.Claim;
 import com.hms.repositories.ClaimRepository;
 import com.hms.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,27 +12,32 @@ import org.springframework.web.bind.annotation.*;
 import com.hms.exception.ResourceNotFoundException;
 @RestController
 @RequestMapping("/ClaimController")
-public class ClaimController {
+public class ClaimController implements Claim {
     @Autowired
     private ClaimRepository claimRepository;
-
-    @Autowired
-    private UserRepository userRepository;
-    @GetMapping("/getClaim")
-    public List<ClaimEntity> getAllReclamation() {
+    @GetMapping("/getallClaim")
+    public List<ClaimEntity> getAllClaim() {
         return claimRepository.findAll();
     }
+    @GetMapping("/getClaimByEmployeeid/{id}")
+    public List<ClaimEntity> getClaimByEmployeeid(@PathVariable Long id) {
 
+        return claimRepository.findclaimbyemployeeid(id);
+    }
     @PostMapping("/createClaim")
-    public ClaimEntity createReclamation(@Valid @RequestBody ClaimEntity claim) {
+    public ClaimEntity createClaim(@Valid @RequestBody ClaimEntity claim) {
         return claimRepository.save(claim);
     }
     @GetMapping("/getClaim/{id}")
-    public List<ClaimEntity> getAllCommande(@PathVariable Long id) {
-        UserEntity user = userRepository.getOne(id);
-        System.out.println("claim:"+claimRepository.findbyuser(id));
-
+    public List<ClaimEntity> getClaimById(@PathVariable Long id) {
         return claimRepository.findbyuser(id);
+    }
+
+    @GetMapping("/getClaimByEmployeeService/{service}")
+    public List<ClaimEntity> getClaimByService(@PathVariable String service) {
+        System.out.println("claim:"+service);
+
+        return claimRepository.findbyEmployeeService(service);
 
     }
     @PostMapping("/updateClaim")
@@ -48,6 +52,11 @@ public class ClaimController {
             reclamation.setAdresse(ReclamationDetails.getAdresse());
             reclamation.setNameservice(ReclamationDetails.getNameservice());
             reclamation.setClaimdescription(ReclamationDetails.getClaimdescription());
+            reclamation.setState(ReclamationDetails.getState());
+            reclamation.setDatedemmande(ReclamationDetails.getDatedemmande());
+            reclamation.setEmployee(ReclamationDetails.getEmployee());
+            reclamation.setAcceptationdate(ReclamationDetails.getAcceptationdate());
+            reclamation.setInterventionstate(ReclamationDetails.getInterventionstate());
             claimRepository.save(reclamation);
             return true;
         } catch (Exception e) {

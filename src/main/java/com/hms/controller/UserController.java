@@ -1,20 +1,21 @@
 package com.hms.controller;
 import javax.validation.Valid;
-
-import com.hms.entity.CommandeEntity;
 import com.hms.entity.UserEntity;
+import com.hms.interfaces.User;
 import com.hms.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import com.hms.exception.ResourceNotFoundException;
 
-import java.util.List;
 
 @RestController
 @RequestMapping("/UserController")
-public class UserController {
+public class UserController implements User {
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    PasswordEncoder encoder;
 
     @PostMapping("/getUser")
 
@@ -34,7 +35,7 @@ public class UserController {
             user.setPhone(userEntity.getPhone());
             user.setAdresse(userEntity.getAdresse());
             user.setCin(userEntity.getCin());
-            user.setPassword(userEntity.getPassword());
+           user. setPassword(encoder.encode(userEntity.getPassword()));
             userRepository.save(user);
             return true;
         } catch (Exception e) {
@@ -43,10 +44,5 @@ public class UserController {
         }
 
     }
-  /*  @PostMapping("/getCommandeByUser")
-    public CommandeEntity getCommandeByUser(@Valid @RequestBody UserEntity userEntity){
-       CommandeEntity commande = userRepository.getCommandesByUser(userEntity.getId());
 
-        return commande;
-    }*/
 }

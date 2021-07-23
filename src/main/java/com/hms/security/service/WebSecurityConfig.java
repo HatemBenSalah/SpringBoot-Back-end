@@ -1,5 +1,7 @@
 package com.hms.security.service;
 
+import com.hms.security.jwt.AuthAdminTokenFilter;
+import com.hms.security.jwt.AuthEmployeeTokenFilter;
 import com.hms.security.jwt.AuthEntryPointJwt;
 import com.hms.security.jwt.AuthTokenFilter;
 import com.hms.security.service.UserDetailsServiceImpl;
@@ -27,6 +29,10 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     UserDetailsServiceImpl userDetailsService;
+    @Autowired
+    AdminDetailsServiceImpl adminDetailsService;
+    @Autowired
+    EmployeeDetailsServiceImpl employeeDetailsService;
 
     @Autowired
     private AuthEntryPointJwt unauthorizedHandler;
@@ -36,9 +42,22 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return new AuthTokenFilter();
     }
 
+    @Bean
+    public AuthAdminTokenFilter authenticationAdminJwtTokenFilter() {
+        return new AuthAdminTokenFilter();
+    }
+
+    @Bean
+    public AuthEmployeeTokenFilter authenticationEmployeeJwtTokenFilter() {
+        return new AuthEmployeeTokenFilter();
+    }
+
     @Override
     public void configure(AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {
-        authenticationManagerBuilder.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
+       authenticationManagerBuilder.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
+        authenticationManagerBuilder.userDetailsService(adminDetailsService).passwordEncoder(passwordEncoder());
+        authenticationManagerBuilder.userDetailsService(employeeDetailsService).passwordEncoder(passwordEncoder());
+
     }
 
     @Bean
@@ -54,19 +73,18 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        /*http.cors().and().csrf().disable()
-                .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-                .authorizeRequests().antMatchers("/api/auth/**")
-                .permitAll()
-                .anyRequest().authenticated();
-*/http.cors().and().csrf().disable()
+
+        http.cors().and().csrf().disable()
                 .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                 .authorizeRequests().antMatchers("/api/auth/**").permitAll()
-                .antMatchers("/CommandeController/**").permitAll()
+                .antMatchers("/api/authAdmin/**").permitAll().antMatchers("/api/authemployee/**").permitAll()
                 .anyRequest().authenticated();
 
         http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(authenticationAdminJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(authenticationEmployeeJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
+
+
     }
 }

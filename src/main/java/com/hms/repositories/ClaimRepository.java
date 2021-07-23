@@ -16,4 +16,14 @@ public interface ClaimRepository extends JpaRepository<ClaimEntity, Integer> {
            value = "select  * from claim  where user_id=?1",
            nativeQuery = true)
    List<ClaimEntity> findbyuser(Long i);
+
+
+   @Query(
+           value = "select  * from claim  where nameservice=?1",
+           nativeQuery = true)
+   List<ClaimEntity> findbyEmployeeService(String servicename); @Query(
+           value = "select  * from claim  where employee_id=?1",
+           nativeQuery = true)
+   List<ClaimEntity> findclaimbyemployeeid(Long id);
+
 }

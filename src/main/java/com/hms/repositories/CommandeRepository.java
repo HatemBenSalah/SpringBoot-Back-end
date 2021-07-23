@@ -14,5 +14,14 @@ public interface CommandeRepository extends JpaRepository<CommandeEntity, Long>{
             nativeQuery = true)
     List<CommandeEntity> findbyuser(Long i);
 
+
+    @Query(
+            value = "select  * from commande  where nameservice=?1",
+            nativeQuery = true)
+    List<CommandeEntity> findbyemployeeService(String service);
+    @Query(
+            value = "select  * from commande  where employee_id=?1",
+            nativeQuery = true)
+    List<CommandeEntity> findcommandbyemployeeid(Long id);
    // List<CommandeEntity> findCommandeEntityById(UserEntity user);
 }

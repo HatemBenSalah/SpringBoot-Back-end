@@ -4,7 +4,7 @@ public class JwtResponse {
     private String token;
     private String type = "Bearer ";
     private Long id;
-
+    private String employeservice;
     private String email;
     private String roles;
     private String phone;
@@ -13,10 +13,45 @@ public class JwtResponse {
     private String cin;
     private String adresse;
 
+    public JwtResponse(String accessToken, Long id, String email, String roles , String phone,
+                       String firstName, String lastName, String cin, String adresse)
+    {
+        this.token = accessToken;
+        this.id = id;
 
-    public String getToken() {
-        return token;
+        this.email = email;
+        this.roles = roles;
+        this.phone=phone;
+        this.firstName=firstName;
+        this.lastName=lastName;
+        this.cin=cin;
+        this.adresse=adresse;
+
     }
+    public JwtResponse(String accessToken, Long id, String email, String roles , String phone,
+                       String firstName, String lastName, String cin, String adresse,String employeservice)
+    {
+        this.token = accessToken;
+        this.id = id;
+
+        this.email = email;
+        this.roles = roles;
+        this.phone=phone;
+        this.firstName=firstName;
+        this.lastName=lastName;
+        this.cin=cin;
+        this.adresse=adresse;
+        this.employeservice=employeservice;
+
+    }
+
+    public String getEmployeservice() {
+        return employeservice;
+    }
+
+    public void setEmployeservice(String employeservice) { this.employeservice = employeservice;   }
+
+    public String getToken() { return token; }
 
     public void setToken(String token) {
         this.token = token;
@@ -74,21 +109,6 @@ public class JwtResponse {
         this.adresse = adresse;
     }
 
-    public JwtResponse(String accessToken, Long id, String email, String roles , String phone,
-                       String firstName, String lastName, String cin, String adresse)
-    {
-        this.token = accessToken;
-        this.id = id;
-
-        this.email = email;
-        this.roles = roles;
-        this.phone=phone;
-        this.firstName=firstName;
-        this.lastName=lastName;
-        this.cin=cin;
-        this.adresse=adresse;
-
-    }
 
 
     public String getAccessToken() { return token; }

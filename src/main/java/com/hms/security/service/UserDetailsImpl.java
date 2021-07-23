@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+import com.hms.entity.AdminEntity;
+import com.hms.entity.EmployeeEntity;
 import com.hms.entity.UserEntity;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -23,6 +25,7 @@ public class UserDetailsImpl implements UserDetails {
     private String lastName;
     private String cin;
     private String adresse;
+    private String employeservice;
     @JsonIgnore
     private String password;
 
@@ -41,6 +44,21 @@ public class UserDetailsImpl implements UserDetails {
         this.cin = cin;
 
     }
+    public UserDetailsImpl(Long id, String email, String password, String roles,
+                           String phone, String firstName, String lastName, String adresse, String cin,String employeeservice) {
+        this.id = id;
+        this.email = email;
+        this.password = password;
+        this.roles = roles;
+        this.phone = phone;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.adresse = adresse;
+        this.cin = cin;
+        this.employeservice=employeeservice;
+    }
+
+
 
     public static UserDetailsImpl build(UserEntity user) {
 
@@ -49,6 +67,22 @@ public class UserDetailsImpl implements UserDetails {
                 user.getEmail(),
                 user.getPassword(),
                 user.getRoles(), user.getPhone(), user.getFirstName(), user.getLastName(), user.getAdresse(), user.getCin());
+    }
+    public static UserDetailsImpl build(AdminEntity admin) {
+
+        return new UserDetailsImpl(
+                admin.getId(),
+                admin.getEmail(),
+                admin.getPassword(),
+                admin.getRoles(), admin.getPhone(), admin.getFirstName(), admin.getLastName(), admin.getAdresse(), admin.getCin());
+    }
+    public static UserDetailsImpl build(EmployeeEntity user) {
+
+        return new UserDetailsImpl(
+                user.getId(),
+                user.getEmail(),
+                user.getPassword(),
+                user.getRoles(), user.getPhone(), user.getFirstName(), user.getLastName(), user.getAdresse(), user.getCin(),user.getEmployeservice());
     }
 
     @Override
@@ -114,6 +148,13 @@ public class UserDetailsImpl implements UserDetails {
 
     public String getPassword() {
         return password;
+    }
+    public String getEmployeservice() {
+        return employeservice;
+    }
+
+    public void setEmployeservice(String employeeservice) {
+        this.employeservice = employeeservice;
     }
 
     @Override

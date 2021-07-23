@@ -16,6 +16,7 @@ public class SignupRequest {
     private String cin;
     private String adresse;
     private String roles;
+    private String employeservice;
 
     public String getPhone() {return phone;}
     public void setPhone(String phone) {this.phone = phone; }
@@ -43,4 +44,6 @@ public class SignupRequest {
     public void setRole(String roles) {
         this.roles = roles;
     }
+    public String getEmployeservice() { return employeservice;}
+    public void setEmployeservice(String employeeservice) {this.employeservice = employeeservice; }
 }
